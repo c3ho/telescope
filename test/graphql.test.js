@@ -1,9 +1,44 @@
-const { ApolloServer } = require('apollo-server-express');
-const { typeDefs, resolvers } = require('../src/backend/web/graphql/index');
+// const { mockServer } = require('graphql-tools');
+const { makeExecutableSchema } = require('apollo-server-express');
+const { resolvers } = require('../src/backend/web/graphql/index');
 
-const mocks = {
+const typeDefs = `
+# 'Feed' matches our Feed type used with redis
+type Feed {
+  id: String
+  author: String
+  url: String
+}
+
+# 'Post' matches our Post type used with redis
+type Post {
+  id: String
+  author: String
+  title: String
+  html: String
+  text: String
+  published: String
+  updated: String
+  url: String
+  site: String
+  guid: String
+}
+
+# Queries to fetch data from redis
+type Query {
+  getFeedById(id: ID!): Feed
+  getFeedByUrl(url: String!): Feed
+  getFeeds: [Feed]
+  getFeedsCount: Int
+  getPost(id: ID!): Post
+  getPosts(page: Int, perPage: Int): [Post]
+  getPostsCount: Int
+}
+`;
+
+/* const mocks = {
   Feed: () => ({
-    id: 'testFeedId',
+    id: 'feedID123',
     author: 'testFeedAuthor',
     url: 'testFeedURL.com',
   }),
@@ -19,13 +54,17 @@ const mocks = {
     site: 'testPostSite',
     guid: 'testPostGuid',
   }),
-};
+}; */
 
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
+const schema = makeExecutableSchema({ typeDefs, resolvers });
+console.log(schema);
+/* const server = mockServer({
+  schema,
   mocks,
   mockEntireSchema: false,
-});
+}); */
 
-server.listen();
+test('random test', () => {
+  // const result = server.query();
+  // expect(result).rejects.toBe(3);
+});

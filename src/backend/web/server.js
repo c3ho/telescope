@@ -1,4 +1,5 @@
 require('../lib/config');
+// eslint-disable-next-line import/no-unresolved
 const stoppable = require('stoppable');
 
 const app = require('./app.js');
