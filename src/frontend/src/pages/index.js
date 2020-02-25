@@ -4,10 +4,12 @@ import { StaticQuery, graphql } from 'gatsby';
 import Layout from '../components/Layout/Layout';
 
 import './index.css';
+import Test from '../components/Test/index';
 
 export default function IndexPage() {
   return (
-    <>
+    <Test author="hi" />
+    /* <>
       <StaticQuery
         query={graphql`
           query TelescopeUrl {
@@ -20,6 +22,6 @@ export default function IndexPage() {
         `}
         render={data => <Layout telescopeUrl={data.site.siteMetadata.telescopeUrl} />}
       />
-    </>
+    </> */
   );
 }
