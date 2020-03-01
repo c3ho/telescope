@@ -5,10 +5,11 @@ import Layout from '../components/Layout/Layout';
 
 import './index.css';
 import Test from '../components/Test/index';
+import tester from '../components/Test/index';
 
 export default function IndexPage() {
   return (
-    <Test author="hi" />
+    <tester />
     /* <>
       <StaticQuery
         query={graphql`
