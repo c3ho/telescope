@@ -16,7 +16,10 @@ require('dotenv').config({
  * NOTE: for our Zeit Now builds, we specify the staging URL
  * in our now.json file.
  */
-const telescopeUrl = process.env.API_URL || `http://localhost:${process.env.PORT || 3000}`;
+const telescopeUrl =
+  process.env.API_URL ||
+  'https://dev.telescope.cdot.systems' ||
+  `http://localhost:${process.env.PORT || 3000}`;
 
 module.exports = {
   siteMetadata: {
