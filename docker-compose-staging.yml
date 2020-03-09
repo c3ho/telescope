@@ -19,7 +19,7 @@ services:
       - redis
       - login
     volumes:
-      - static:./src/frontend/public
+      - static:/telescope/src/frontend/public
     restart: always
 
   redis:
