@@ -2,7 +2,7 @@ import React, { useEffect, useContext } from 'react';
 import LoggedIn from './LoggedIn.jsx';
 import LoggedOut from './LoggedOut.jsx';
 import useSiteMetadata from '../../hooks/use-site-metadata';
-import { UserContext } from '../../contexts/UserContext.jsx';
+import { UserStateContext, UserDispatchContext } from '../../contexts/UserContext.jsx';
 
 /**
  * Show either a Login button (if user isn't authenticated)
@@ -11,7 +11,8 @@ import { UserContext } from '../../contexts/UserContext.jsx';
 
 function Login() {
   const { telescopeUrl } = useSiteMetadata();
-  const { state, dispatch } = useContext(UserContext);
+  const state = useContext(UserStateContext);
+  const dispatch = useContext(UserDispatchContext);
 
   useEffect(() => {
     // Try to get user session info from the server.
@@ -41,7 +42,7 @@ function Login() {
     getUserInfo();
   }, [telescopeUrl, dispatch]);
 
-  return state.email ? <LoggedIn /> : <LoggedOut />;
+  return state && state.email ? <LoggedIn /> : <LoggedOut />;
 }
 
 export default Login;

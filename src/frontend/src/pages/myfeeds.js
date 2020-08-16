@@ -10,7 +10,7 @@ import useSiteMetadata from '../hooks/use-site-metadata';
 import ExistingFeedList from '../components/MyFeedsPage/ExistingFeedList.jsx';
 import HelpPopoverButton from '../components/MyFeedsPage/HelpPopoverButton.jsx';
 import CustomizedSnackBar from '../components/SnackBar';
-import { UserContext } from '../contexts/UserContext.jsx';
+import { UserStateContext } from '../contexts/UserContext.jsx';
 
 const useStyles = makeStyles((theme) => ({
   margin: {
@@ -26,20 +26,22 @@ export default function MyFeeds() {
   const [newFeedAuthor, setNewFeedAuthor] = useState('');
   const [newFeedUrl, setNewFeedUrl] = useState('');
   const [submitStatus, setSubmitStatus] = useState({ message: '', isError: false });
-  const { state } = useContext(UserContext);
+  const state = useContext(UserStateContext);
   const [feedHash, updateFeedHash] = useState({});
   const [alert, setAlert] = useState('false');
 
   const { telescopeUrl } = useSiteMetadata();
 
+  console.log('myfeeds checking state', state);
+
   useEffect(() => {
+    // setNewFeedAuthor(state.name);
     ValidatorForm.addValidationRule('isUrl', (value) => !!isWebUri(value));
     return ValidatorForm.removeValidationRule.bind('isUrl');
   }, []);
 
   useEffect(() => {
     setAlert(true);
-    console.log('myfeeds checking state.id', state.id);
     if (state.id) {
       return;
     }

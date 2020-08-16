@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button, Box } from '@material-ui/core';
 import { Link } from 'gatsby';
-import { UserContext } from '../../contexts/UserContext.jsx';
+import { UserStateContext } from '../../contexts/UserContext.jsx';
 
 import useSiteMetadata from '../../hooks/use-site-metadata';
 
@@ -31,7 +31,7 @@ const useStyles = makeStyles({
 });
 
 function LoggedIn() {
-  const { state } = useContext(UserContext);
+  const state = useContext(UserStateContext);
   const { telescopeUrl } = useSiteMetadata();
   const logoutUrl = `${telescopeUrl}/auth/logout`;
   const classes = useStyles();
