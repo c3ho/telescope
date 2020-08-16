@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Box, Card, Container, Grid, IconButton, Typography } from '@material-ui/core';
 import { AccountCircle, AddCircle, RssFeed } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
@@ -10,6 +10,7 @@ import useSiteMetadata from '../hooks/use-site-metadata';
 import ExistingFeedList from '../components/MyFeedsPage/ExistingFeedList.jsx';
 import HelpPopoverButton from '../components/MyFeedsPage/HelpPopoverButton.jsx';
 import CustomizedSnackBar from '../components/SnackBar';
+import { UserContext } from '../contexts/UserContext.jsx';
 
 const useStyles = makeStyles((theme) => ({
   margin: {
@@ -25,37 +26,21 @@ export default function MyFeeds() {
   const [newFeedAuthor, setNewFeedAuthor] = useState('');
   const [newFeedUrl, setNewFeedUrl] = useState('');
   const [submitStatus, setSubmitStatus] = useState({ message: '', isError: false });
-  const [userInfo, setUserInfo] = useState({});
+  const { state } = useContext(UserContext);
   const [feedHash, updateFeedHash] = useState({});
   const [alert, setAlert] = useState('false');
 
   const { telescopeUrl } = useSiteMetadata();
 
   useEffect(() => {
-    (async function fetchUserInfo() {
-      try {
-        const response = await fetch(`${telescopeUrl}/user/info`);
-
-        if (!response.ok) {
-          throw new Error(response.statusText);
-        }
-
-        const user = await response.json();
-        setUserInfo(user);
-        setNewFeedAuthor(user.name);
-      } catch (error) {
-        console.error('Failed to fetch user information', error);
-        window.location.href = `${telescopeUrl}/404`;
-      }
-    })();
-
     ValidatorForm.addValidationRule('isUrl', (value) => !!isWebUri(value));
     return ValidatorForm.removeValidationRule.bind('isUrl');
-  }, [telescopeUrl]);
+  }, []);
 
   useEffect(() => {
     setAlert(true);
-    if (userInfo.id) {
+    console.log('myfeeds checking state.id', state.id);
+    if (state.id) {
       return;
     }
 
@@ -79,7 +64,7 @@ export default function MyFeeds() {
         console.error('Error hashing user feeds', error);
       }
     })();
-  }, [telescopeUrl, userInfo, feedHash, alert]);
+  }, [telescopeUrl, state, feedHash, alert]);
 
   async function addFeed() {
     try {
@@ -89,7 +74,7 @@ export default function MyFeeds() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          user: userInfo.id,
+          user: state.id,
           author: newFeedAuthor,
           url: newFeedUrl,
         }),
@@ -126,7 +111,7 @@ export default function MyFeeds() {
     updateFeedHash(updatedHash);
   }
 
-  return userInfo.id ? (
+  return state && state.id ? (
     <PageBase title="My Feeds">
       <div className={classes.margin}>
         <ValidatorForm onSubmit={() => addFeed()} instantValidate={false}>

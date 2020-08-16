@@ -22,6 +22,8 @@ function LoggedOut() {
   const loginUrl = `${telescopeUrl}/auth/login`;
   const classes = useStyles();
 
+  console.log('Logged out page');
+
   return (
     <Button className={classes.button}>
       <a href={loginUrl} className={classes.link}>
