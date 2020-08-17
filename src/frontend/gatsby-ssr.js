@@ -1,4 +1,6 @@
-// import { UserProvider } from './src/contexts/UserContext.jsx';
-const UserProvider = require('./src/contexts/UserContext.jsx').default;
+import React from 'react';
+import { UserProvider } from './src/contexts/UserContext.jsx';
 
-export const wrapRootElement = UserProvider;
+export const wrapRootElement = ({ element }) => {
+  return <UserProvider>{element}</UserProvider>;
+};

@@ -27,25 +27,20 @@ export default function MyFeeds() {
   const [newFeedUrl, setNewFeedUrl] = useState('');
   const [submitStatus, setSubmitStatus] = useState({ message: '', isError: false });
   const state = useContext(UserStateContext);
-  const [feedHash, updateFeedHash] = useState({});
+  const [feedHash, updateFeedHash] = useState([]);
   const [alert, setAlert] = useState('false');
 
   const { telescopeUrl } = useSiteMetadata();
 
-  console.log('myfeeds checking state', state);
-
   useEffect(() => {
-    // setNewFeedAuthor(state.name);
+    setNewFeedAuthor(state.name);
     ValidatorForm.addValidationRule('isUrl', (value) => !!isWebUri(value));
     return ValidatorForm.removeValidationRule.bind('isUrl');
   }, []);
 
   useEffect(() => {
     setAlert(true);
-    if (state.id) {
-      return;
-    }
-
+    console.log('myfeeds checking state', state);
     (async function hashUserFeeds() {
       try {
         const response = await fetch(`${telescopeUrl}/user/feeds`);
@@ -66,7 +61,7 @@ export default function MyFeeds() {
         console.error('Error hashing user feeds', error);
       }
     })();
-  }, [telescopeUrl, state, feedHash, alert]);
+  }, [telescopeUrl, state, alert]);
 
   async function addFeed() {
     try {

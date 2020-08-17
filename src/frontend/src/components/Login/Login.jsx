@@ -17,6 +17,7 @@ function Login() {
   useEffect(() => {
     // Try to get user session info from the server.
     async function getUserInfo() {
+      if (state && state.name) return;
       try {
         // See if the server has session info on this user
         const response = await fetch(`${telescopeUrl}/user/info`);
